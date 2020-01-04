@@ -9,6 +9,8 @@ class Course(models.Model):
     description = fields.Text()
     responsible_id = fields.Many2one('res.users',
                                      ondelete='set null', string="Responsible", index=True)
+    session_ids = fields.One2many(
+        'openacademy.session', 'course_id', string="Sessions")
 
 
 class Session(models.Model):
@@ -21,16 +23,4 @@ class Session(models.Model):
     instructor_id = fields.Many2one('res.partner', string="Instructor")
     course_id = fields.Many2one('openacademy.course',
         ondelete='cascade', string="Course", required=True)
-
-
-# class openacademy(models.Model):
-#     _name = 'openacademy.openacademy'
-
-#     name = fields.Char()
-#     value = fields.Integer()
-#     value2 = fields.Float(compute="_value_pc", store=True)
-#     description = fields.Text()
-#
-#     @api.depends('value')
-#     def _value_pc(self):
-#         self.value2 = float(self.value) / 100
+    attendee_ids = fields.Many2many('res.partner', string="Attendees")
